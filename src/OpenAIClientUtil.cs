@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Soenneker.Utils.AsyncSingleton;
 using Soenneker.OpenAI.Client.Abstract;
 using System.Threading.Tasks;
@@ -34,9 +35,9 @@ public class OpenAIClientUtil: IOpenAIClientUtil
         });
     }
 
-    public ValueTask<OpenAIService> Get()
+    public ValueTask<OpenAIService> Get(CancellationToken cancellationToken = default)
     {
-        return _client.Get();
+        return _client.Get(cancellationToken);
     }
 
     public void Dispose()

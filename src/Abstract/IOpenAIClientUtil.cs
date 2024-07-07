@@ -1,5 +1,6 @@
 using OpenAI.Managers;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Soenneker.OpenAI.Client.Abstract;
@@ -9,5 +10,5 @@ namespace Soenneker.OpenAI.Client.Abstract;
 /// </summary>
 public interface IOpenAIClientUtil : IDisposable, IAsyncDisposable
 {
-    ValueTask<OpenAIService> Get();
+    ValueTask<OpenAIService> Get(CancellationToken cancellationToken = default);
 }
