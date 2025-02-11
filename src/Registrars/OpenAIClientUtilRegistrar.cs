@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Soenneker.OpenAI.Client.Abstract;
 
@@ -12,8 +12,9 @@ public static class OpenAIClientUtilRegistrar
     /// <summary>
     /// Adds <see cref="IOpenAIClientUtil"/> as a singleton service. <para/>
     /// </summary>
-    public static void AddOpenAIClientUtilAsSingleton(this IServiceCollection services)
+    public static IServiceCollection AddOpenAIClientUtilAsSingleton(this IServiceCollection services)
     {
         services.TryAddSingleton<IOpenAIClientUtil, OpenAIClientUtil>();
+        return services;
     }
 }
