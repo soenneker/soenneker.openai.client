@@ -12,7 +12,7 @@ using Soenneker.Extensions.Configuration;
 namespace Soenneker.OpenAI.Client;
 
 /// <inheritdoc cref="IOpenAIClientUtil"/>
-public class OpenAIClientUtil: IOpenAIClientUtil
+public sealed class OpenAIClientUtil: IOpenAIClientUtil
 {
     private readonly AsyncSingleton<OpenAIService> _client;
 
@@ -42,15 +42,11 @@ public class OpenAIClientUtil: IOpenAIClientUtil
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
-
         _client.Dispose();
     }
 
     public ValueTask DisposeAsync()
     {
-        GC.SuppressFinalize(this);
-
         return _client.DisposeAsync();
     }
 }
