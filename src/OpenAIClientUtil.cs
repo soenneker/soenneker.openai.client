@@ -15,24 +15,30 @@ namespace Soenneker.OpenAI.Client;
 public sealed class OpenAIClientUtil: IOpenAIClientUtil
 {
     private readonly AsyncSingleton<OpenAIService> _client;
+    private readonly ILogger<OpenAIClientUtil> _logger;
+    private readonly IConfiguration _configuration;
 
     public OpenAIClientUtil(ILogger<OpenAIClientUtil> logger, IConfiguration configuration)
     {
-        _client = new AsyncSingleton<OpenAIService>(() =>
+        _logger = logger;
+        _configuration = configuration;
+        _client = new AsyncSingleton<OpenAIService>(CreateClient);
+    }
+
+    private OpenAIService CreateClient()
+    {
+        _logger.LogDebug("Creating OpenAI client...");
+
+        var apiKey = _configuration.GetValueStrict<string>("OpenAI:ApiKey");
+
+        var options = new OpenAiOptions
         {
-            logger.LogDebug("Creating OpenAI client...");
+            ApiKey = apiKey
+        };
 
-            var apiKey = configuration.GetValueStrict<string>("OpenAI:ApiKey");
+        var client = new OpenAIService(options);
 
-            var options = new OpenAiOptions
-            {
-                ApiKey = apiKey
-            };
-
-            var client = new OpenAIService(options);
-
-            return client;
-        });
+        return client;
     }
 
     public ValueTask<OpenAIService> Get(CancellationToken cancellationToken = default)
